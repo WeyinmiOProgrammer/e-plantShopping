@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import addItem from './CartSlice';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-
+    const [addedToCart,setAddedToCart] = useState({});
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -248,6 +249,17 @@ function ProductList({ onHomeClick }) {
         setShowCart(false); // Hide the cart when navigating to About Us
     };
 
+    const handleAddToCart = (product) => {
+        dispatchEvent(addItem(product));
+
+        setAddedToCart((prevState) => ({
+            ...prevState,
+            [product.name]: true,
+
+        }));
+    }
+
+
     const handleContinueShopping = (e) => {
         e.preventDefault();
         setShowCart(false);
@@ -287,7 +299,7 @@ function ProductList({ onHomeClick }) {
                         <img src={plant.img} alt={plant.name} />
                         </div>
                         <div className="description">{plant.description}</div>
-                        <div className="cost">${plant.cost}</div>
+                        <div className="cost">{plant.cost}</div>
                         <div className="button-container">
                             <button className="product-button" onClick={() => handleAddToCart(plant)}>
                                 Add to Cart
