@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import addItem from './CartSlice';
+import { addItem, removeItem, updateQuantity } from './CartSlice';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -249,12 +249,12 @@ function ProductList({ onHomeClick }) {
         setShowCart(false); // Hide the cart when navigating to About Us
     };
 
-    const handleAddToCart = (product) => {
-        dispatchEvent(addItem(product));
+    const handleAddToCart = (plant) => {
+        dispatchEvent(addItem(plant));
 
         setAddedToCart((prevState) => ({
             ...prevState,
-            [product.name]: true,
+            [plant.name]: true,
 
         }));
     }
@@ -301,8 +301,8 @@ function ProductList({ onHomeClick }) {
                         <div className="description">{plant.description}</div>
                         <div className="cost">{plant.cost}</div>
                         <div className="button-container">
-                            <button className="product-button" onClick={() => handleAddToCart(plant)}>
-                                Add to Cart
+                            <button className="product-button" onClick={() => handleAddToCart(plant)} disabled={addedToCart[plant.name]}>
+                            {addedToCart[plant.name] ? 'Added to Cart' : 'Add to Cart'}
                             </button>
                             
                         </div>
